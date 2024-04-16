@@ -90,6 +90,15 @@ bool Building::load(const string& _filename)
   if (y["name"])
     name = y["name"].as<string>();
 
+  
+  if(y["lane_width"]){
+      static_level_object.init_lane_width(y["lane_width"].as<double>()); ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      //static_level_object.lane_width_ = 1.0;
+  }
+  else{
+      static_level_object.init_lane_width(1.0); // default 1 meter lane width  //////////////////////////////////////////////////////////////////////////
+  } 
+
   if (y["coordinate_system"])
     coordinate_system.value =
       CoordinateSystem::value_from_string(y["coordinate_system"].as<string>());
@@ -117,7 +126,7 @@ bool Building::load(const string& _filename)
     printf("expected top-level dictionary named 'levels'");
     return false;
   }
-
+   
   levels.clear();
   const YAML::Node yl = y["levels"];
   for (YAML::const_iterator it = yl.begin(); it != yl.end(); ++it)
@@ -210,7 +219,14 @@ bool Building::save()
       params_node[param.first] = param.second.to_yaml();
     y["parameters"] = params_node;
   }
-
+  
+  ////////////////////////////////////////////////////////////////////////////////////////
+  if(static_level_object.get_lane_width() > 0)
+    y["lane_width"] = static_level_object.get_lane_width();
+  else
+    y["lane_width"] = 1.0; // default 1 meter lane width
+  /////////////////////////////////////////////////////////////////////////////////////////
+  
   YAML::Emitter emitter;
   yaml_utils::write_node(y, emitter);
   std::ofstream fout(filename);

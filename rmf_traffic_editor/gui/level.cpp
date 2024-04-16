@@ -33,6 +33,7 @@
 using std::string;
 using std::vector;
 
+double Level::lane_width_; ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 Level::Level()
 {
@@ -623,6 +624,14 @@ void Level::calculate_scale(const CoordinateSystem& coordinate_system)
     y_meters = drawing_height * drawing_meters_per_pixel;
   }
 }
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void Level::init_lane_width(double x){
+  Level::lane_width_ = x;
+}
+double Level::get_lane_width(){
+  return Level::lane_width_;
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // todo: migrate this to the TrafficMap class eventually
 void Level::draw_lane(
@@ -654,12 +663,12 @@ void Level::draw_lane(
     }
   }
 
-  double lane_width_meters = 1.0;
+  double lane_width_meters = Level::lane_width_;//lane_width_meters_;	/////////////////////////////////////////////////////////////////////////////
   if (edge.get_width() > 0)
     lane_width_meters = edge.get_width();
   else if (graph_default_width > 0)
     lane_width_meters = graph_default_width;
-
+//std::cout<<lane_width_meters<<"\n";
   const double lane_pen_width = lane_width_meters / drawing_meters_per_pixel;
   const double norm_x = dx / len;
   const double norm_y = dy / len;

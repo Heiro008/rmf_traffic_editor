@@ -16,6 +16,7 @@
 */
 
 #include "graph.h"
+#include <iostream>
 using std::string;
 
 Graph::Graph()
@@ -28,6 +29,7 @@ Graph::~Graph()
 
 bool Graph::from_yaml(const int _idx, const YAML::Node& data)
 {
+std::cout<<"parameter_called"<<"\n";
   if (!data.IsMap())
     throw std::runtime_error("Graph::from_yaml() expected a map");
   idx = _idx;
@@ -36,8 +38,10 @@ bool Graph::from_yaml(const int _idx, const YAML::Node& data)
   if (data["name"])
     name = data["name"].as<string>();
 
-  if (data["default_lane_width"])
+  if (data["default_lane_width"]){
+  	std::cout<<"parameter_loaded"<<"\n";
     default_lane_width = data["default_lane_width"].as<double>();
+    }
 
   return true;
 }

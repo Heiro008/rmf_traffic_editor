@@ -51,6 +51,8 @@ public:
   std::map<std::string, Param> params;
   CoordinateSystem coordinate_system;
 
+  Level static_level_object; /////////////////////////////////////////////////////////////////
+
   mutable crowd_sim::CrowdSimImplPtr crowd_sim_impl;
 
   bool set_filename(const std::string& _filename);
